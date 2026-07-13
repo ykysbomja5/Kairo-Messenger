@@ -1,0 +1,33 @@
+# OS files
+.DS_Store
+Thumbs.db
+*.db
+
+# Go build / binaries
+server.exe
+*.exe
+server
+cmd/server/server
+cmd/server/server.exe
+
+# DB and development environment
+.codex-logs/
+.codex-pgdata/
+.idea/
+.vscode/
+
+# Python scripts (temporary patches from agent workspace)
+*.py
+
+# Zip files / Backups
+*.zip
+nnn/
+
+# Uploads directory
+uploads/*
+!uploads/.keep
+
+# Temporary Go files
+test_json.go
+test_webrtc.go
+EOF

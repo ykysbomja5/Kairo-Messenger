@@ -1,0 +1,687 @@
+/* ===================================================
+   KAIRO Messenger — Mobile & Responsive Styles
+   =================================================== */
+
+/* ---------- Dynamic viewport height fix ---------- */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --vh: 1vh;
+}
+
+html, body {
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+#app-container .container {
+  min-height: 100dvh;
+  display: flex;
+}
+
+/* ---------- Messages container base ---------- */
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+.message, .message .bubble {
+  max-width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Message input base (all screens) ---------- */
+.message-input-container .message-input {
+  flex: 1;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: var(--border-radius);
+  background: var(--primary-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  outline: none;
+  font-size: 1rem;
+}
+
+/* ---------- Touch-friendly tap targets ---------- */
+.attachment-btn, .voice-btn, .send-btn {
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+}
+
+.page .back-btn,
+.chat-header .back-btn {
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- Page overlays base ---------- */
+.page.active {
+  transform: translateX(0);
+  display: block;
+  z-index: 300;
+}
+
+.page .page-header {
+  position: sticky;
+  top: 0;
+  z-index: 310;
+  background: var(--primary-bg);
+}
+
+/* ---------- Dropdown z-index ---------- */
+.chat-dropdown-menu,
+.dropdown-menu {
+  z-index: 250;
+}
+
+/* ====================================================
+   DESKTOP (min-width: 769px)
+   ==================================================== */
+@media (min-width: 769px) {
+  .sidebar {
+    position: relative;
+    width: var(--sidebar-width);
+    left: 0;
+    box-shadow: none;
+  }
+
+  .main-content {
+    display: flex !important;
+  }
+
+  .chat-header .back-btn {
+    display: none !important;
+  }
+
+  .app-nav {
+    display: flex;
+  }
+
+  /* Language switcher in settings on desktop */
+  .settings-lang-item {
+    display: flex;
+  }
+}
+
+/* ====================================================
+   TABLET (481px–768px)
+   ==================================================== */
+@media (max-width: 768px) {
+  :root {
+    --nav-width: 0px;
+    --sidebar-width: 100%;
+    --header-height: 56px;
+    --footer-height: 64px;
+  }
+
+  /* --- Hide vertical nav, show bottom nav --- */
+  .app-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 56px;
+    flex-direction: row;
+    border-right: none;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--primary-bg);
+    z-index: 500;
+    padding: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  body.light-theme .app-nav {
+    background-color: var(--secondary-bg);
+    border-top-color: var(--border-color);
+  }
+
+  .nav-items {
+    flex-direction: row;
+    margin-top: 0;
+    gap: 0;
+    justify-content: space-around;
+    height: 100%;
+  }
+
+  .nav-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
+    border-radius: 12px;
+  }
+
+  /* --- Container layout --- */
+  .container {
+    flex-direction: column;
+    min-height: 100dvh;
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* --- Sidebar: full width overlay --- */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - 56px - env(safe-area-inset-bottom, 0px));
+    max-width: none;
+    z-index: 200;
+    background-color: var(--primary-bg);
+    border-right: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  body.light-theme .sidebar {
+    background-color: var(--primary-bg) !important;
+  }
+
+  .sidebar:not(.active) {
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* --- Main content: toggle visibility --- */
+  .main-content {
+    display: none !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - 56px - env(safe-area-inset-bottom, 0px));
+    z-index: 200;
+    background-color: var(--primary-bg);
+  }
+
+  .main-content.active {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  /* --- Chat header --- */
+  .chat-header {
+    margin: 8px;
+    padding: 0 12px;
+    height: var(--header-height);
+    border-radius: 12px;
+  }
+
+  .chat-header .back-btn {
+    display: inline-flex !important;
+  }
+
+  .main-app-header {
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    margin: 0;
+    display: none !important;
+  }
+
+  /* --- Chat avatar smaller --- */
+  .chat-avatar {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    font-size: 1rem;
+  }
+
+  /* --- Messages --- */
+  .message {
+    max-width: 85%;
+  }
+
+  .messages-container {
+    flex: 1;
+    padding: 12px;
+    padding-bottom: 16px;
+  }
+
+  /* --- Message input --- */
+  .message-input-container {
+    margin: 0 8px 8px 8px;
+    padding: 8px 12px;
+    height: auto;
+    border-radius: 24px;
+    gap: 8px;
+    padding-bottom: 8px;
+  }
+
+  /* --- Pages (Settings, Profile, etc.) --- */
+  .page {
+    padding: 16px;
+  }
+
+  .page.active {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - 56px - env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    z-index: 400;
+    background-color: var(--primary-bg) !important;
+  }
+
+  body.light-theme .page.active {
+    background-color: var(--primary-bg) !important;
+  }
+
+  .page .page-header {
+    padding-top: env(safe-area-inset-top, 0px);
+    margin-bottom: 12px;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+    margin-left: 10px;
+  }
+
+  /* --- Modals --- */
+  .modal-content {
+    width: 95%;
+    max-width: 400px;
+    padding: 20px;
+    max-height: 85dvh;
+    overflow-y: auto;
+  }
+
+  /* --- Call window --- */
+  .call-window {
+    width: 95%;
+    padding: 20px;
+  }
+
+  /* --- Dropdowns --- */
+  .dropdown-menu {
+    width: calc(100% - 32px);
+    left: 16px;
+    right: 16px;
+    top: var(--header-height);
+  }
+
+  .chat-dropdown-menu {
+    width: 180px;
+    right: 10px;
+  }
+
+  /* --- Profile adjustments --- */
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+    font-size: 3rem;
+  }
+
+  .profile-name {
+    font-size: 1.5rem;
+  }
+
+  .profile-info {
+    width: 100%;
+    max-width: none;
+    padding: 16px;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .profile-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .edit-form {
+    width: 100%;
+    max-width: none;
+  }
+
+  /* --- Profile navigation --- */
+  .profile-navigation {
+    flex-wrap: wrap;
+    max-width: none;
+  }
+
+  .profile-nav-btn {
+    flex: 1 0 45%;
+    margin: 4px;
+  }
+
+  /* --- Group members grid --- */
+  .group-members-list {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+  }
+
+  /* --- Settings --- */
+  .settings-item {
+    padding: 14px 0;
+    font-size: 0.95rem;
+  }
+
+  .settings-content {
+    padding: 0;
+  }
+
+  /* --- Search --- */
+  .search-container {
+    padding: 10px 12px;
+  }
+
+  .search-box {
+    padding: 8px 12px;
+  }
+
+  /* --- App header (sidebar) --- */
+  .app-header {
+    height: var(--header-height);
+    padding: 0 12px;
+  }
+
+  .app-header .header-create-chat-btn {
+    padding: 6px 10px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* --- Welcome message --- */
+  .welcome-message {
+    padding: 40px 20px;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  /* --- Chat time in sidebar --- */
+  .chat-time {
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  /* --- Logout button --- */
+  .logout-button {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+
+  /* -- Group members in chat header -- */
+  .group-members {
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+
+  /* --- Storage page --- */
+  .storage-options {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  /* --- About page --- */
+  .about-content {
+    padding: 16px 0;
+  }
+
+  .about-links {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* --- Chat actions (call buttons) --- */
+  .chat-actions {
+    gap: 4px;
+    margin-left: 4px;
+  }
+
+  .action-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  /* --- Chat item padding --- */
+  .chat-item {
+    padding: 10px 12px;
+  }
+}
+
+/* ====================================================
+   SMALL PHONE (max-width: 400px)
+   ==================================================== */
+@media (max-width: 400px) {
+  :root {
+    --header-height: 50px;
+    --footer-height: 56px;
+  }
+
+  .nav-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+  }
+
+  .message-input-container {
+    margin: 0 4px 4px 4px;
+    padding: 6px 8px;
+    gap: 6px;
+  }
+
+  .message-input-container .message-input {
+    min-height: 40px;
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  .attachment-btn, .voice-btn, .send-btn {
+    min-width: 40px;
+    min-height: 40px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .chat-header {
+    margin: 4px;
+    padding: 0 8px;
+    height: var(--header-height);
+  }
+
+  .chat-avatar {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    font-size: 0.9rem;
+    margin-right: 10px;
+  }
+
+  .chat-name {
+    font-size: 0.9rem;
+  }
+
+  .last-message {
+    font-size: 0.8rem;
+  }
+
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+    font-size: 2.5rem;
+  }
+
+  .profile-name {
+    font-size: 1.3rem;
+  }
+
+  .page {
+    padding: 12px;
+  }
+
+  .page-title {
+    font-size: 1.1rem;
+  }
+
+  .modal-content {
+    padding: 16px;
+  }
+
+  .modal-title {
+    font-size: 1.2rem;
+  }
+
+  .form-input, .select-input {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .settings-item {
+    padding: 12px 0;
+    font-size: 0.9rem;
+  }
+
+  .call-window {
+    padding: 16px;
+  }
+
+  .call-avatar {
+    width: 90px;
+    height: 90px;
+    font-size: 2.5rem;
+  }
+
+  .call-name {
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+  }
+
+  .call-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+
+  .group-members-list {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+}
+
+/* ====================================================
+   LANDSCAPE PHONE
+   ==================================================== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .app-nav {
+    height: 48px;
+  }
+
+  .container {
+    padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .sidebar,
+  .main-content,
+  .page.active {
+    height: calc(100dvh - 48px - env(safe-area-inset-bottom, 0px));
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  .call-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 2rem;
+  }
+}
+
+/* ====================================================
+   SAFE AREA SUPPORT
+   ==================================================== */
+@supports (padding: max(0px)) {
+  .message-input-container {
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+
+  .page .page-header {
+    padding-top: max(0px, env(safe-area-inset-top));
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+}
+
+/* ====================================================
+   LANGUAGE SWITCHER IN SETTINGS (Mobile-Friendly)
+   ==================================================== */
+.settings-lang-item {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.settings-lang-item > span {
+  margin-bottom: 10px;
+  display: block;
+  font-weight: 500;
+}
+
+.settings-lang-switcher {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.settings-lang-switcher .lang-btn {
+  flex: 1;
+  padding: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.settings-lang-switcher .lang-btn.active {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+/* ====================================================
+   SMOOTH TRANSITIONS
+   ==================================================== */
+.sidebar,
+.main-content,
+.page {
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
