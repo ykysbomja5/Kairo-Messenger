@@ -1,4 +1,4 @@
-# 🌌 Kairo Messenger
+# 🌌 Kairo Messenger🌌
 
 [![Go Version](https://img.shields.io/badge/Go-1.24%2B-00ADD8?style=for-the-badge&logo=go&logoColor=white)](https://golang.org)
 [![Gin Framework](https://img.shields.io/badge/Gin-v1.10.1-008080?style=for-the-badge&logo=go&logoColor=white)](https://gin-gonic.com)
